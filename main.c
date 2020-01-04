@@ -519,6 +519,8 @@ void main(void)
              S2LPSpiWriteFifo(packetlen, vectcTxBuff);
 
              /* send the TX command */
+             EN39_SetHigh();
+             delay_ms(10);
              S2LPCmdStrobeTx();
 
              /* wait for TX done */
@@ -529,6 +531,7 @@ void main(void)
                     S2LPGpioIrqGetStatus(&xIrqStatus);
                     if(xIrqStatus.TX_DATA_SENT)
                     {
+                        EN39_SetLow();
                         send_chars("MES: Data sent\r\n");
                         /* sleep between transmissions */
                         if(init>0)
