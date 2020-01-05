@@ -370,11 +370,11 @@ void main(void)
             else IOCCNbits.IOCCN5=0;
 #endif
 #ifdef HWVer4
-            if(jp4_mode&0x04) IOCAPbits.IOCAP2=0;
-            else IOCANbits.IOCAN2=0;
+            if(jp4_mode&0x04) IOCANbits.IOCAN2=0;
+            else IOCAPbits.IOCAP2=0;
 #endif
 #ifdef HW_AGS9
-            if(jp4_mode&0x04) IOCCPbits.IOCCP1=0;
+            if(jp4_mode&0x04) IOCCNbits.IOCCN1=0;
             else IOCCNbits.IOCCN1=0;
 #endif
             mode2|=ALARM_JP4;
@@ -436,12 +436,12 @@ void main(void)
             else IOCCNbits.IOCCN4=0;
 #endif
 #ifdef HWVer4
-            if(jp5_mode&0x04) IOCCPbits.IOCCP0=0;
-            else IOCCNbits.IOCCN0=0;
+            if(jp5_mode&0x04) IOCCNbits.IOCCN0=0;
+            else IOCCPbits.IOCCP0=0;
 #endif
 #ifdef HW_AGS9
-            if(jp5_mode&0x04) IOCCPbits.IOCCP2=0;
-            else IOCCNbits.IOCCN2=0;
+            if(jp5_mode&0x04) IOCCNbits.IOCCN2=0;
+            else IOCCPbits.IOCCP2=0;
 #endif
             mode2|=ALARM_JP5;
             mode1&=CLEAR_JP5;

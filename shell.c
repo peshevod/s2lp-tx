@@ -23,12 +23,12 @@ __eeprom _par _pars[]={
     {PAR_UI32,'I',{ 30 }}, // interval in seconds
     {PAR_UI8,'X',{ 3 }}, // repeater
 #ifdef HWVer3
-    {PAR_UI8,'Y',{ 0x05 }}, // JP4 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, 0x04 bit: if set JP4 1 - norm, 0 - alarm
-    {PAR_UI8,'Z',{ 0x06 }}, // JP5 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, 0x04 bit: if set JP5 1 - norm, 0 - alarm
+    {PAR_UI8,'Y',{ 0x05 }}, // JP4 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP4 1 - norm, 0 - alarm (disconnected - 1, connected - 0)
+    {PAR_UI8,'Z',{ 0x06 }}, // JP5 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP5 1 - norm, 0 - alarm (disconnected - 1, connected - 0)
 #endif
 #if defined (HWVer4) || defined (HW_AGS9)
-    {PAR_UI8,'Y',{ 0x05 }}, // JP4 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, 0x04 bit: if set JP4 1 - norm, 0 - alarm
-    {PAR_UI8,'Z',{ 0x06 }}, // JP5 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, 0x04 bit: if set JP5 1 - norm, 0 - alarm
+    {PAR_UI8,'Y',{ 0x01 }}, // JP4 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP4 1 - norm, 0 - alarm (disconnected - 0, connected - 1)
+    {PAR_UI8,'Z',{ 0x02 }}, // JP5 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP5 1 - norm, 0 - alarm (disconnected - 0, connected - 1)
 #endif
     {PAR_UI8,'G',{ 0x060 }}, // CRC mode - 0x00 -NO CRC, 0x20 - 8 bit, 0x40 - 16 bit 0x8005, 0x60 - 16 bit 0x1021
     {0,'\x00',{0}}
