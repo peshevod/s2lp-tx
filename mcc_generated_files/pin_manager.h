@@ -13,12 +13,12 @@
   @Description
     This header file provides APIs for driver for .
     Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.78.1
+        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.76
         Device            :  PIC16LF18446
         Driver Version    :  2.11
     The generated drivers are tested against the following:
-        Compiler          :  XC8 2.10 and above
-        MPLAB 	          :  MPLAB X 5.30	
+        Compiler          :  XC8 2.00
+        MPLAB 	          :  MPLAB X 5.10	
 */
 
 /*
@@ -96,6 +96,26 @@
 #define EN39_SetOpenDrain()       do { ODCONAbits.ODCA4 = 1; } while(0)
 #define EN39_SetAnalogMode()      do { ANSELAbits.ANSA4 = 1; } while(0)
 #define EN39_SetDigitalMode()     do { ANSELAbits.ANSA4 = 0; } while(0)
+
+// get/set GND aliases
+#define GND_TRIS                 TRISAbits.TRISA5
+#define GND_LAT                  LATAbits.LATA5
+#define GND_PORT                 PORTAbits.RA5
+#define GND_WPU                  WPUAbits.WPUA5
+#define GND_OD                   ODCONAbits.ODCA5
+#define GND_ANS                  ANSELAbits.ANSA5
+#define GND_SetHigh()            do { LATAbits.LATA5 = 1; } while(0)
+#define GND_SetLow()             do { LATAbits.LATA5 = 0; } while(0)
+#define GND_Toggle()             do { LATAbits.LATA5 = ~LATAbits.LATA5; } while(0)
+#define GND_GetValue()           PORTAbits.RA5
+#define GND_SetDigitalInput()    do { TRISAbits.TRISA5 = 1; } while(0)
+#define GND_SetDigitalOutput()   do { TRISAbits.TRISA5 = 0; } while(0)
+#define GND_SetPullup()          do { WPUAbits.WPUA5 = 1; } while(0)
+#define GND_ResetPullup()        do { WPUAbits.WPUA5 = 0; } while(0)
+#define GND_SetPushPull()        do { ODCONAbits.ODCA5 = 0; } while(0)
+#define GND_SetOpenDrain()       do { ODCONAbits.ODCA5 = 1; } while(0)
+#define GND_SetAnalogMode()      do { ANSELAbits.ANSA5 = 1; } while(0)
+#define GND_SetDigitalMode()     do { ANSELAbits.ANSA5 = 0; } while(0)
 
 // get/set SDI1 aliases
 #define SDI1_TRIS                 TRISBbits.TRISB4
@@ -177,25 +197,17 @@
 #define CSN_SetAnalogMode()      do { ANSELBbits.ANSB7 = 1; } while(0)
 #define CSN_SetDigitalMode()     do { ANSELBbits.ANSB7 = 0; } while(0)
 
-// get/set TX1 aliases
-#define TX1_TRIS                 TRISCbits.TRISC0
-#define TX1_LAT                  LATCbits.LATC0
-#define TX1_PORT                 PORTCbits.RC0
-#define TX1_WPU                  WPUCbits.WPUC0
-#define TX1_OD                   ODCONCbits.ODCC0
-#define TX1_ANS                  ANSELCbits.ANSC0
-#define TX1_SetHigh()            do { LATCbits.LATC0 = 1; } while(0)
-#define TX1_SetLow()             do { LATCbits.LATC0 = 0; } while(0)
-#define TX1_Toggle()             do { LATCbits.LATC0 = ~LATCbits.LATC0; } while(0)
-#define TX1_GetValue()           PORTCbits.RC0
-#define TX1_SetDigitalInput()    do { TRISCbits.TRISC0 = 1; } while(0)
-#define TX1_SetDigitalOutput()   do { TRISCbits.TRISC0 = 0; } while(0)
-#define TX1_SetPullup()          do { WPUCbits.WPUC0 = 1; } while(0)
-#define TX1_ResetPullup()        do { WPUCbits.WPUC0 = 0; } while(0)
-#define TX1_SetPushPull()        do { ODCONCbits.ODCC0 = 0; } while(0)
-#define TX1_SetOpenDrain()       do { ODCONCbits.ODCC0 = 1; } while(0)
-#define TX1_SetAnalogMode()      do { ANSELCbits.ANSC0 = 1; } while(0)
-#define TX1_SetDigitalMode()     do { ANSELCbits.ANSC0 = 0; } while(0)
+// get/set RC0 procedures
+#define RC0_SetHigh()            do { LATCbits.LATC0 = 1; } while(0)
+#define RC0_SetLow()             do { LATCbits.LATC0 = 0; } while(0)
+#define RC0_Toggle()             do { LATCbits.LATC0 = ~LATCbits.LATC0; } while(0)
+#define RC0_GetValue()              PORTCbits.RC0
+#define RC0_SetDigitalInput()    do { TRISCbits.TRISC0 = 1; } while(0)
+#define RC0_SetDigitalOutput()   do { TRISCbits.TRISC0 = 0; } while(0)
+#define RC0_SetPullup()             do { WPUCbits.WPUC0 = 1; } while(0)
+#define RC0_ResetPullup()           do { WPUCbits.WPUC0 = 0; } while(0)
+#define RC0_SetAnalogMode()         do { ANSELCbits.ANSC0 = 1; } while(0)
+#define RC0_SetDigitalMode()        do { ANSELCbits.ANSC0 = 0; } while(0)
 
 // get/set JP4 aliases
 #define JP4_TRIS                 TRISCbits.TRISC1

@@ -13,12 +13,12 @@
   @Description
     This header file provides APIs for driver for EUSART1.
     Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.78.1
+        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.76
         Device            :  PIC16LF18446
         Driver Version    :  2.1.0
     The generated drivers are tested against the following:
-        Compiler          :  XC8 2.10 and above
-        MPLAB 	          :  MPLAB X 5.30
+        Compiler          :  XC8 2.00
+        MPLAB 	          :  MPLAB X 5.10
 */
 
 /*
@@ -87,6 +87,7 @@ typedef union {
 /**
   Section: EUSART1 APIs
 */
+
 
 /**
   @Summary

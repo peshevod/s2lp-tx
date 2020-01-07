@@ -330,6 +330,25 @@ void main(void)
 //    alarm5=0;
     pmd_off();
     init_pic(1);
+/*
+//   EN39_SetHigh();
+    send_chars("MES: Pic Init completed\r\n");
+   S2LPSpiInit();
+   S2LPExitShutdown();
+     send_chars("MES: S2LP Init completed\r\n");
+  while(1)
+    {
+    uint8_t tempRegValue;
+                    S2LPRefreshStatus();
+//      g_xStatus = S2LPSpiReadRegisters(MC_STATE0_ADDR, 1, &tempRegValue);
+                        send_chars(ui8tox(g_xStatus.MC_STATE,pb));
+//                        send_chars(" ");
+//                        send_chars(ui8tox(tempRegValue,pb));
+                        send_chars("\r\n");
+//        send_chars("EN39 High\n\r");
+        delay_ms(100);
+    }
+*/
 #ifdef HWVer3
     IOCAF2_SetInterruptHandler(EXTI_Callback_INT);
 #endif
@@ -532,7 +551,9 @@ void main(void)
                     if(xIrqStatus.TX_DATA_SENT)
                     {
                         EN39_SetLow();
-                        send_chars("MES: Data sent\r\n");
+                        send_chars("MES: Data sent ");
+                        send_chars(ui32tox(((uint32_t*)vectcTxBuff)[0],pb));
+                        send_chars("\r\n");
                         /* sleep between transmissions */
                         if(init>0)
                         {
@@ -566,6 +587,8 @@ void main(void)
                 else
                 {
                     S2LPRefreshStatus();
+                        send_chars(ui8tox(g_xStatus.MC_STATE,pb));
+                        send_chars("\r\n");
                     if(init>0)
                     {
                         vectcTxBuff[2]=0xFF;

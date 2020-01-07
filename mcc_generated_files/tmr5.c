@@ -13,12 +13,12 @@
   @Description
     This source file provides APIs for TMR5.
     Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.78.1
+        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.76
         Device            :  PIC16LF18446
         Driver Version    :  2.11
     The generated drivers are tested against the following:
-        Compiler          :  XC8 2.10 and above
-        MPLAB 	          :  MPLAB X 5.30
+        Compiler          :  XC8 2.00
+        MPLAB 	          :  MPLAB X 5.10
 */
 
 /*
@@ -79,11 +79,11 @@ void TMR5_Initialize(void)
     //TMR5L 0; 
     TMR5L = 0x00;
 
-    // Clearing IF flag.
-    PIR4bits.TMR5IF = 0;
-	
     // Load the TMR value to reload variable
     timer5ReloadVal=(uint16_t)((TMR5H << 8) | TMR5L);
+
+    // Clearing IF flag.
+    PIR4bits.TMR5IF = 0;
 
     // CKPS 1:8; NOT_SYNC synchronize; TMR5ON enabled; T5RD16 enabled; 
     T5CON = 0x33;

@@ -1,5 +1,5 @@
 /**
-  SPI1 Generated Driver File
+  MSSP1 Generated Driver File
 
   @Company
     Microchip Technology Inc.
@@ -8,17 +8,18 @@
     spi1.c
 
   @Summary
-    This is the generated driver implementation file for the SPI1 driver using PIC10 / PIC12 / PIC16 / PIC18 MCUs
+    This is the generated driver implementation file for the MSSP1 driver using 
+    PIC10 / PIC12 / PIC16 / PIC18 MCUs
 
   @Description
-    This header file provides implementations for driver APIs for SPI1.
+    This source file provides APIs SPI1.
     Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.78.1
+        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.76
         Device            :  PIC16LF18446
-        Driver Version    :  1.0.0
+        Driver Version    :  2.02
     The generated drivers are tested against the following:
-        Compiler          :  XC8 2.10 and above or later
-        MPLAB             :  MPLAB X 5.30
+        Compiler          :  XC8 2.00
+        MPLAB 	          :  MPLAB X 5.10
 */
 
 /*
@@ -44,99 +45,104 @@
     SOFTWARE.
 */
 
-#include "spi1.h"
+/**
+  Section: Included Files
+*/
+
 #include <xc.h>
+#include "spi1.h"
 
-typedef struct { 
-    uint8_t con1; 
-    uint8_t stat;
-    uint8_t add;
-    uint8_t operation;
-} spi1_configuration_t;
+/**
+  Section: Macro Declarations
+*/
 
-//con1 == SSPxCON1, stat == SSPxSTAT, add == SSPxADD, operation == Master/Slave
-static const spi1_configuration_t spi1_configuration[] = {   
-    { 0x20, 0x0, 0x0, 0 }
-};
+#define SPI_RX_IN_PROGRESS 0x0
+
+/**
+  Section: Module APIs
+*/
 
 void SPI1_Initialize(void)
 {
-    //Setup PPS Pins
-    SSP1CLKPPS = 14;
-    SSP1DATPPS = 12;
-    RB6PPS    = 19;
-    RB5PPS    = 20;
-    //SPI setup
-    SSP1STAT = 0x00;
+    // Set the SPI1 module to the options selected in the User Interface
+    
+    // SMP Middle; CKE Active to Idle; 
+    SSP1STAT = 0x40;
+    
+    // SSPEN enabled; CKP Idle:Low, Active:High; SSPM FOSC/4; 
     SSP1CON1 = 0x20;
+    
+    // SSPADD 0; 
     SSP1ADD = 0x00;
-    TRISBbits.TRISB6 = 0;
-    SSP1CON1bits.SSPEN = 0;
 }
 
-bool SPI1_Open(spi1_modes_t spi1UniqueConfiguration)
+uint8_t SPI1_Exchange8bit(uint8_t data)
 {
-    if(!SSP1CON1bits.SSPEN)
-    {
-        SSP1STAT = spi1_configuration[spi1UniqueConfiguration].stat;
-        SSP1CON1 = spi1_configuration[spi1UniqueConfiguration].con1;
-        SSP1CON2 = 0x00;
-        SSP1ADD  = spi1_configuration[spi1UniqueConfiguration].add;
-        TRISBbits.TRISB6 = spi1_configuration[spi1UniqueConfiguration].operation;
-        SSP1CON1bits.SSPEN = 1;
-        return true;
-    }
-    return false;
-}
+    // Clear the Write Collision flag, to allow writing
+    SSP1CON1bits.WCOL = 0;
 
-void SPI1_Close(void)
-{
-    SSP1CON1bits.SSPEN = 0;
-}
-
-uint8_t SPI1_ExchangeByte(uint8_t data)
-{
     SSP1BUF = data;
-    while(!PIR3bits.SSP1IF);
-    PIR3bits.SSP1IF = 0;
-    return SSP1BUF;
-}
 
-void SPI1_ExchangeBlock(void *block, size_t blockSize)
-{
-    uint8_t *data = block;
-    while(blockSize--)
+    while(SSP1STATbits.BF == SPI_RX_IN_PROGRESS)
     {
-        *data = SPI1_ExchangeByte(*data );
-        data++;
     }
+
+    return (SSP1BUF);
 }
 
-// Half Duplex SPI Functions
-void SPI1_WriteBlock(void *block, size_t blockSize)
+uint8_t SPI1_Exchange8bitBuffer(uint8_t *dataIn, uint8_t bufLen, uint8_t *dataOut)
 {
-    uint8_t *data = block;
-    while(blockSize--)
+    uint8_t bytesWritten = 0;
+
+    if(bufLen != 0)
     {
-        SPI1_ExchangeByte(*data++);
+        if(dataIn != NULL)
+        {
+            while(bytesWritten < bufLen)
+            {
+                if(dataOut == NULL)
+                {
+                    SPI1_Exchange8bit(dataIn[bytesWritten]);
+                }
+                else
+                {
+                    dataOut[bytesWritten] = SPI1_Exchange8bit(dataIn[bytesWritten]);
+                }
+
+                bytesWritten++;
+            }
+        }
+        else
+        {
+            if(dataOut != NULL)
+            {
+                while(bytesWritten < bufLen )
+                {
+                    dataOut[bytesWritten] = SPI1_Exchange8bit(SPI1_DUMMY_DATA);
+
+                    bytesWritten++;
+                }
+            }
+        }
     }
+
+    return bytesWritten;
 }
 
-void SPI1_ReadBlock(void *block, size_t blockSize)
+bool SPI1_IsBufferFull(void)
 {
-    uint8_t *data = block;
-    while(blockSize--)
-    {
-        *data++ = SPI1_ExchangeByte(0);
-    }
+    return (SSP1STATbits.BF);
 }
 
-void SPI1_WriteByte(uint8_t byte)
+bool SPI1_HasWriteCollisionOccured(void)
 {
-    SSP1BUF = byte;
+    return (SSP1CON1bits.WCOL);
 }
 
-uint8_t SPI1_ReadByte(void)
+void SPI1_ClearWriteCollisionStatus(void)
 {
-    return SSP1BUF;
+    SSP1CON1bits.WCOL = 0;
 }
+/**
+ End of File
+*/
