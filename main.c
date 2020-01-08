@@ -99,6 +99,13 @@ void EXTI_Callback_INT(void)
     irqf++;
 }
 
+#ifdef HW_AGS9
+void EXTI_Callback_GPIO1(void)
+{
+    if(GPIO1_GetValue()) EN39_SetHigh();
+    else EN39_SetLow();
+}
+#endif
 void EXTI_Callback_UART1(void)
 {
     NOP();
@@ -330,8 +337,8 @@ void main(void)
 //    alarm5=0;
     pmd_off();
     init_pic(1);
-/*
-//   EN39_SetHigh();
+
+/*   EN39_SetHigh();
     send_chars("MES: Pic Init completed\r\n");
    S2LPSpiInit();
    S2LPExitShutdown();
@@ -345,8 +352,9 @@ void main(void)
 //                        send_chars(" ");
 //                        send_chars(ui8tox(tempRegValue,pb));
                         send_chars("\r\n");
-//        send_chars("EN39 High\n\r");
-        delay_ms(100);
+        send_chars("EN39 High\n\r");
+        delay_ms(1000);
+        EN39_Toggle();
     }
 */
 #ifdef HWVer3
@@ -357,6 +365,7 @@ void main(void)
 #endif
 #ifdef HW_AGS9
     IOCCF7_SetInterruptHandler(EXTI_Callback_INT);
+    IOCCF6_SetInterruptHandler(EXTI_Callback_GPIO1);
 #endif
     mode0=0;
     mode1=0;
@@ -500,6 +509,12 @@ void main(void)
     {
 #endif        
         radio_tx_init(packetlen);
+#ifdef HW_AGS9                            
+                            IOCCNbits.IOCCN6=1;
+                            IOCCNbits.IOCCN7=1;
+                            IOCCPbits.IOCCP6=0;
+                            IOCCPbits.IOCCP7=0;
+#endif                            
         vectcTxBuff[0]=0;
         vectcTxBuff[1]=0;
         vectcTxBuff[2]=0xFF;
@@ -539,7 +554,7 @@ void main(void)
 
              /* send the TX command */
              EN39_SetHigh();
-             delay_ms(10);
+             delay_ms(30);
              S2LPCmdStrobeTx();
 
              /* wait for TX done */
@@ -550,7 +565,7 @@ void main(void)
                     S2LPGpioIrqGetStatus(&xIrqStatus);
                     if(xIrqStatus.TX_DATA_SENT)
                     {
-                        EN39_SetLow();
+//                        EN39_SetLow();
                         send_chars("MES: Data sent ");
                         send_chars(ui32tox(((uint32_t*)vectcTxBuff)[0],pb));
                         send_chars("\r\n");
@@ -571,11 +586,24 @@ void main(void)
                         }
                         else
                         {
+                            
+#ifdef HW_AGS9                            
+                            IOCCNbits.IOCCN6=0;
+                            IOCCNbits.IOCCN7=0;
+                            IOCCPbits.IOCCP6=0;
+                            IOCCPbits.IOCCP7=0;
+#endif                            
                             SDN_SetHigh();
                             vectcTxBuff[9]&=mode2;
                             to_sleep(SLEEP);
                             SDN_SetLow();
                             radio_tx_init(packetlen);
+#ifdef HW_AGS9                            
+                            IOCCNbits.IOCCN6=1;
+                            IOCCNbits.IOCCN7=1;
+                            IOCCPbits.IOCCP6=0;
+                            IOCCPbits.IOCCP7=0;
+#endif                            
                             vectcTxBuff[0]++;
                             if (vectcTxBuff[0]==0) vectcTxBuff[1]++;
                             vectcTxBuff[3]=repeater;
@@ -596,6 +624,7 @@ void main(void)
                     else vectcTxBuff[2]=0x7F;
                     if(g_xStatus.MC_STATE!=0x5c)
                     {
+//                        EN39_SetLow();
                         if(irqf) continue;
                         send_chars("ERR: Refresh Status != 0x5C ");
                         send_chars(ui8tox(g_xStatus.MC_STATE,pb));

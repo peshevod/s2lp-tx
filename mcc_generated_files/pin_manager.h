@@ -548,6 +548,90 @@ void IOCCF2_DefaultInterruptHandler(void);
  * @Returns
     none
  * @Description
+    Interrupt on Change Handler for the IOCCF6 pin functionality
+ * @Example
+    IOCCF6_ISR();
+ */
+void IOCCF6_ISR(void);
+
+/**
+  @Summary
+    Interrupt Handler Setter for IOCCF6 pin interrupt-on-change functionality
+
+  @Description
+    Allows selecting an interrupt handler for IOCCF6 at application runtime
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    InterruptHandler function pointer.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCCF6_SetInterruptHandler(MyInterruptHandler);
+
+*/
+void IOCCF6_SetInterruptHandler(void (* InterruptHandler)(void));
+
+/**
+  @Summary
+    Dynamic Interrupt Handler for IOCCF6 pin
+
+  @Description
+    This is a dynamic interrupt handler to be used together with the IOCCF6_SetInterruptHandler() method.
+    This handler is called every time the IOCCF6 ISR is executed and allows any function to be registered at runtime.
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCCF6_SetInterruptHandler(IOCCF6_InterruptHandler);
+
+*/
+extern void (*IOCCF6_InterruptHandler)(void);
+
+/**
+  @Summary
+    Default Interrupt Handler for IOCCF6 pin
+
+  @Description
+    This is a predefined interrupt handler to be used together with the IOCCF6_SetInterruptHandler() method.
+    This handler is called every time the IOCCF6 ISR is executed. 
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCCF6_SetInterruptHandler(IOCCF6_DefaultInterruptHandler);
+
+*/
+void IOCCF6_DefaultInterruptHandler(void);
+
+
+/**
+ * @Param
+    none
+ * @Returns
+    none
+ * @Description
     Interrupt on Change Handler for the IOCCF7 pin functionality
  * @Example
     IOCCF7_ISR();

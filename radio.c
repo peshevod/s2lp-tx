@@ -34,6 +34,12 @@ SGpioInit xGpioIRQ={
    S2LP_GPIO_DIG_OUT_IRQ
 };
  
+SGpioInit xGpioTxState={
+   S2LP_GPIO_1,
+   S2LP_GPIO_MODE_DIGITAL_OUTPUT_LP,
+   S2LP_GPIO_DIG_OUT_TX_STATE
+};
+ 
 SAfcInit xSAfcInit={
     S_ENABLE,  /*!< AFC enable */
 //    S_DISABLE,  /*!< AFC disable */
@@ -62,6 +68,7 @@ void radio_init(uint8_t packetlen)
 
     /* S2LP IRQ config */
     S2LPGpioInit(&xGpioIRQ);
+    S2LPGpioInit(&xGpioTxState);
     
     /* S2LP Radio config */
     S2LPRadioInit(&xRadioInit);
@@ -99,7 +106,6 @@ void radio_tx_init(uint8_t packetlen)
 {
     uint8_t tmp;
     int32_t power;
-    EN39_SetHigh();
     radio_init(packetlen);
     set_s('P',&power);
    
@@ -116,7 +122,19 @@ void radio_tx_init(uint8_t packetlen)
     {
         S2LPRadioSetMaxPALevel(S_DISABLE);
         S2LPRadioSetPALeveldBm(7,power);
+        S2LPRadioSetPALeveldBm(6,(power+30)*7/8-30);
+        S2LPRadioSetPALeveldBm(5,(power+30)*6/8-30);
+        S2LPRadioSetPALeveldBm(4,(power+30)*5/8-30);
+        S2LPRadioSetPALeveldBm(3,(power+30)*4/8-30);
+        S2LPRadioSetPALeveldBm(2,(power+30)*3/8-30);
+        S2LPRadioSetPALeveldBm(1,(power+30)*2/8-30);
+        S2LPRadioSetPALeveldBm(0,(power+30)*1/8-30);
+        S2LPRadioSetManualRampingMode(S_ENABLE);
         S2LPRadioSetPALevelMaxIndex(7);
+        S2LPSpiReadRegisters(PA_POWER0_ADDR, 1, &tmp);
+        tmp&=0xE7;
+        tmp|=0x18;
+        g_xStatus = S2LPSpiWriteRegisters(PA_POWER0_ADDR, 1, &tmp);
     }
    
     /* S2LP IRQs enable */
