@@ -98,6 +98,14 @@ void radio_init(uint8_t packetlen)
     set_s('L',&tmp1);
     if(tmp1) tmp&=0xFB;else tmp|=0x04;
     S2LPSpiWriteRegisters(0x78, 1, &tmp);
+    if(xRadioInit.xModulationSelect==0x70)
+    {
+        tmp=0x77;
+        S2LPSpiWriteRegisters(MOD2_ADDR, 1, &tmp);
+        S2LPSpiReadRegisters(PCKTCTRL1_ADDR, 1, &tmp);
+        tmp|=TXSOURCE_REGMASK;
+        S2LPSpiWriteRegisters(PCKTCTRL1_ADDR, 1, &tmp);
+    }
    
 
 }

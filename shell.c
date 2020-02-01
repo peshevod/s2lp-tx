@@ -43,7 +43,7 @@ char prompt[] = {"\r\n> "};
 char err[] = {"\r\nError\r\n> "};
 char ex[] = {"\r\nExit\r\n"};
 char commands[] = {'S', 'L', 'D'};
-char ver[]={"=== S2-LP shell v 1.1.4 ===\r\n"};
+char ver[]={"=== S2-LP shell v 1.1.5 ===\r\n"};
 
 void send_chars(char* x) {
     uint8_t i=0;
