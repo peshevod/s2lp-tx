@@ -59,7 +59,7 @@ extern "C" {
 #define XTAL_FREQ               50000000
 
 void radio_tx_init(uint8_t packetlen);
-#ifndef HW_AGS9
+#ifndef ASG9
 void radio_rx_init(uint8_t packetlen);
 #endif
 void radio_init(uint8_t packetlen);
