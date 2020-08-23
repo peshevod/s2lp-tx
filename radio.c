@@ -5,7 +5,7 @@
 extern uint8_t bypass_ldo;
 extern volatile uint8_t irqf;
 extern char val_buf[BUF_LEN];
-extern uint8_t cw;
+extern uint8_t cw, pn9;
 
 SRadioInit xRadioInit = {
    BASE_FREQUENCY,
@@ -54,6 +54,7 @@ SAfcInit xSAfcInit={
 void radio_init(uint8_t packetlen)
 {
     uint8_t tmp,tmp1;
+    uint32_t tmp32;
     
 //      send_chars("aft\n");
     set_s('F',&xRadioInit.lFrequencyBase);
@@ -69,29 +70,34 @@ void radio_init(uint8_t packetlen)
     
     S2LPRadioSetXtalFrequency(XTAL_FREQ);
 
-    if((xRadioInit.xModulationSelect & 0xF0) ==0x70)
-    {
-        cw=1;
-        tmp=0x77;
-        S2LPSpiWriteRegisters(MOD2_ADDR, 1, &tmp);
-//        S2LPSpiReadRegisters(PCKTCTRL1_ADDR, 1, &tmp);
-//        tmp|=TXSOURCE_REGMASK;
-//        S2LPSpiWriteRegisters(PCKTCTRL1_ADDR, 1, &tmp);
-    }
-        
+    if(xRadioInit.xModulationSelect==0x70) cw=1;
+    
+    set_s('E',&tmp32);
+    xBasicInit.xPreambleLength=(uint16_t)tmp32;
+    if(xBasicInit.xPreambleLength==0) pn9=1;
+    
     /* S2LP Radio config */
     S2LPRadioInit(&xRadioInit);
-    uint32_t tmp32;
     set_s('S',&tmp32);
     S2LPRadioSetChannelSpace(tmp32);
     set_s('C',&tmp);
     S2LPRadioSetChannel(tmp);
     
-    if(!cw)
+    if(cw)
+    {
+        tmp=0x77;
+        S2LPSpiWriteRegisters(MOD2_ADDR, 1, &tmp);
+    }
+    if(pn9)
+    {
+        S2LPSpiReadRegisters(PCKTCTRL1_ADDR, 1, &tmp);
+        tmp|=TXSOURCE_REGMASK;
+        S2LPSpiWriteRegisters(PCKTCTRL1_ADDR, 1, &tmp);
+    }
+        
+    if(!cw && !pn9)
     {
         /* S2LP Packet config */
-        set_s('E',&tmp32);
-        xBasicInit.xPreambleLength=(uint16_t)tmp32;
         set_s('G',&tmp);
         xBasicInit.xCrcMode=tmp;
         S2LPPktBasicInit(&xBasicInit);
@@ -153,7 +159,7 @@ void radio_tx_init(uint8_t packetlen)
         g_xStatus = S2LPSpiWriteRegisters(PA_POWER0_ADDR, 1, &tmp);
     }
    
-    if(!cw)
+    if(!cw && !pn9)
     {
         /* S2LP IRQs enable */
         S2LPGpioIrqConfig(IRQ_TX_DATA_SENT , S_ENABLE);

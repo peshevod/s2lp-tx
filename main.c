@@ -91,7 +91,7 @@ uint8_t packetlen;
 uint8_t jp4_mode,jp5_mode;
 uint32_t t_counter;
 int16_t init;
-uint8_t cw;
+uint8_t cw, pn9;
 uint32_t cw_i;
 
 
@@ -511,8 +511,9 @@ void main(void)
     {
 #endif        
         cw=0;
+        pn9=0;
         radio_tx_init(packetlen);
-        if(cw)
+        if(cw || pn9)
         {
             // Disable the Peripheral Interrupts
             INTERRUPT_PeripheralInterruptDisable();
@@ -523,7 +524,8 @@ void main(void)
             while(1)
             {
                 delay_ms(1000);
-                send_chars("MES: CW mode ");
+                if(cw) send_chars("MES: CW mode ");
+                else send_chars("MES: PN9 mode ");
                 send_chars(ui32toa(cw_i,pb));
                 send_chars("\r\n");
                 cw_i++;
