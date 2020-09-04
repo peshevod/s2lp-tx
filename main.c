@@ -357,10 +357,10 @@ void main(void)
         EN39_Toggle();
     }
 */
-#ifdef HWVer3
+#ifdef HW_ASG4
     IOCAF2_SetInterruptHandler(EXTI_Callback_INT);
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
     IOCCF7_SetInterruptHandler(EXTI_Callback_INT);
 #endif
 #ifdef HW_ASG9
@@ -370,11 +370,11 @@ void main(void)
     mode0=0;
     mode1=0;
     mode2=0;
-#ifdef HWVer3
+#ifdef HW_ASG4
     IOCCPbits.IOCCP5=1;
     IOCCNbits.IOCCN5=1;
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
     IOCAPbits.IOCAP2=1;
     IOCANbits.IOCAN2=1;
 #endif
@@ -393,11 +393,11 @@ void main(void)
         }
         else
         {
-#ifdef HWVer3
+#ifdef HW_ASG4
             if(jp4_mode&0x04) IOCCPbits.IOCCP5=0;
             else IOCCNbits.IOCCN5=0;
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
             if(jp4_mode&0x04) IOCANbits.IOCAN2=0;
             else IOCAPbits.IOCAP2=0;
 #endif
@@ -408,10 +408,10 @@ void main(void)
             mode2|=ALARM_JP4;
             mode1&=CLEAR_JP4;
         }
-#ifdef HWVer3
+#ifdef HW_ASG4
         IOCCF5_SetInterruptHandler(EXTI_Callback_JP4);
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
         IOCAF2_SetInterruptHandler(EXTI_Callback_JP4);
 #endif
 #ifdef HW_ASG9
@@ -420,11 +420,11 @@ void main(void)
     }
     else
     {
-#ifdef HWVer3
+#ifdef HW_ASG4
         IOCCPbits.IOCCP5=0;
         IOCCNbits.IOCCN5=0;
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
         IOCAPbits.IOCAP2=0;
         IOCANbits.IOCAN2=0;
 #endif
@@ -437,11 +437,11 @@ void main(void)
         mode2&=CLEAR_JP4;
     }
     set_s('Z',&jp5_mode);
-#ifdef HWVer3
+#ifdef HW_ASG4
     IOCCNbits.IOCCN4=1;
     IOCCPbits.IOCCP4=1;
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
     IOCCNbits.IOCCN0=1;
     IOCCPbits.IOCCP0=1;
 #endif
@@ -459,11 +459,11 @@ void main(void)
         }
         else
         {
-#ifdef HWVer3
+#ifdef HW_ASG4
             if(jp5_mode&0x04) IOCCPbits.IOCCP4=0;
             else IOCCNbits.IOCCN4=0;
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
             if(jp5_mode&0x04) IOCCNbits.IOCCN0=0;
             else IOCCPbits.IOCCP0=0;
 #endif
@@ -474,10 +474,10 @@ void main(void)
             mode2|=ALARM_JP5;
             mode1&=CLEAR_JP5;
         }
-#ifdef HWVer3
+#ifdef HW_ASG4
         IOCCF4_SetInterruptHandler(EXTI_Callback_JP5);
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
         IOCCF0_SetInterruptHandler(EXTI_Callback_JP5);
 #endif
 #ifdef HW_ASG9
@@ -486,11 +486,11 @@ void main(void)
     }
     else
     {
-#ifdef HWVer3
+#ifdef HW_ASG4
         IOCCNbits.IOCCN4=0;
         IOCCPbits.IOCCP4=0;
 #endif
-#ifdef HWVer4
+#ifdef HW_ASG5
         IOCCNbits.IOCCN0=0;
         IOCCPbits.IOCCP0=0;
 #endif

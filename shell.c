@@ -26,7 +26,7 @@ __eeprom _par _pars[]={
     {PAR_UI8,'Y',{ 0x05 }}, // JP4 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP4 1 - norm, 0 - alarm (disconnected - 1, connected - 0)
     {PAR_UI8,'Z',{ 0x06 }}, // JP5 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP5 1 - norm, 0 - alarm (disconnected - 1, connected - 0)
 #endif
-#if defined (HWVer4) || defined (HW_ASG9)
+#if defined (HW_ASG5) || defined (HW_ASG9)
     {PAR_UI8,'Y',{ 0x01 }}, // JP4 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP4 1 - norm, 0 - alarm (disconnected - 0, connected - 1)
     {PAR_UI8,'Z',{ 0x02 }}, // JP5 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP5 1 - norm, 0 - alarm (disconnected - 0, connected - 1)
 #endif
