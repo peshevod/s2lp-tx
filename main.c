@@ -76,7 +76,7 @@ uint8_t vectcRxBuff[MAX_REC_SIZE];
 
 S2LPIrqs xIrqStatus;
 volatile uint8_t irqf,irqu;
-#ifndef ASG9
+#ifndef HW_ASG9
 uint8_t mode;
 #endif
 uint8_t mode0,mode1,mode2;
@@ -101,7 +101,7 @@ void EXTI_Callback_INT(void)
     irqf++;
 }
 
-#ifdef ASG9
+#ifdef HW_ASG9
 void EXTI_Callback_GPIO1(void)
 {
     if(GPIO1_GetValue()) EN39_SetHigh();
@@ -260,14 +260,14 @@ void init_pic(uint8_t shell)
     uint8_t tmp;
     timers_init();
     if(shell) start_x_shell();
-#ifndef ASG9
+#ifndef HW_ASG9
     set_s('T',&tmp);
     if(tmp)
     {
 #endif
         pmd_set(SEND);
         if(shell) send_chars("MES: Transmit mode\r\n");
-#ifndef ASG9
+#ifndef HW_ASG9
         mode=MODE_TX;
     }
     else
@@ -359,28 +359,28 @@ void main(void)
         EN39_Toggle();
     }
 */
-#ifdef ASG4
-    IOCAF2_SetInterruptHandler(EXTI_Callback_INT);
+#ifdef HW_ASG4
+    IOCASGAF2_SetInterruptHandler(EXTI_Callback_INT);
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
     IOCCF7_SetInterruptHandler(EXTI_Callback_INT);
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
     IOCCF7_SetInterruptHandler(EXTI_Callback_INT);
     IOCCF6_SetInterruptHandler(EXTI_Callback_GPIO1);
 #endif
     mode0=0;
     mode1=0;
     mode2=0;
-#ifdef ASG4
+#ifdef HW_ASG4
     IOCCPbits.IOCCP5=1;
     IOCCNbits.IOCCN5=1;
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
     IOCAPbits.IOCAP2=1;
     IOCANbits.IOCAN2=1;
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
     IOCCPbits.IOCCP1=1;
     IOCCNbits.IOCCN1=1;
 #endif
@@ -395,42 +395,42 @@ void main(void)
         }
         else
         {
-#ifdef ASG4
+#ifdef HW_ASG4
             if(jp4_mode&0x04) IOCCPbits.IOCCP5=0;
             else IOCCNbits.IOCCN5=0;
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
             if(jp4_mode&0x04) IOCANbits.IOCAN2=0;
             else IOCAPbits.IOCAP2=0;
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
             if(jp4_mode&0x04) IOCCNbits.IOCCN1=0;
             else IOCCNbits.IOCCN1=0;
 #endif
             mode2|=ALARM_JP4;
             mode1&=CLEAR_JP4;
         }
-#ifdef ASG4
+#ifdef HW_ASG4
         IOCCF5_SetInterruptHandler(EXTI_Callback_JP4);
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
         IOCAF2_SetInterruptHandler(EXTI_Callback_JP4);
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
         IOCCF1_SetInterruptHandler(EXTI_Callback_JP4);
 #endif
     }
     else
     {
-#ifdef ASG4
+#ifdef HW_ASG4
         IOCCPbits.IOCCP5=0;
         IOCCNbits.IOCCN5=0;
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
         IOCAPbits.IOCAP2=0;
         IOCANbits.IOCAN2=0;
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
         IOCCPbits.IOCCP1=0;
         IOCCNbits.IOCCN1=0;
 #endif
@@ -439,15 +439,15 @@ void main(void)
         mode2&=CLEAR_JP4;
     }
     set_s('Z',&jp5_mode);
-#ifdef ASG4
+#ifdef HW_ASG4
     IOCCNbits.IOCCN4=1;
     IOCCPbits.IOCCP4=1;
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
     IOCCNbits.IOCCN0=1;
     IOCCPbits.IOCCP0=1;
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
     IOCCNbits.IOCCN2=1;
     IOCCPbits.IOCCP2=1;
 #endif
@@ -461,42 +461,42 @@ void main(void)
         }
         else
         {
-#ifdef ASG4
+#ifdef HW_ASG4
             if(jp5_mode&0x04) IOCCPbits.IOCCP4=0;
             else IOCCNbits.IOCCN4=0;
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
             if(jp5_mode&0x04) IOCCNbits.IOCCN0=0;
             else IOCCPbits.IOCCP0=0;
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
             if(jp5_mode&0x04) IOCCNbits.IOCCN2=0;
             else IOCCPbits.IOCCP2=0;
 #endif
             mode2|=ALARM_JP5;
             mode1&=CLEAR_JP5;
         }
-#ifdef ASG4
+#ifdef HW_ASG4
         IOCCF4_SetInterruptHandler(EXTI_Callback_JP5);
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
         IOCCF0_SetInterruptHandler(EXTI_Callback_JP5);
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
         IOCCF2_SetInterruptHandler(EXTI_Callback_JP5);
 #endif
     }
     else
     {
-#ifdef ASG4
+#ifdef HW_ASG4
         IOCCNbits.IOCCN4=0;
         IOCCPbits.IOCCP4=0;
 #endif
-#ifdef ASG5
+#ifdef HW_ASG5
         IOCCNbits.IOCCN0=0;
         IOCCPbits.IOCCP0=0;
 #endif
-#ifdef ASG9
+#ifdef HW_ASG9
         IOCCNbits.IOCCN2=0;
         IOCCPbits.IOCCP2=0;
 #endif
@@ -506,7 +506,7 @@ void main(void)
     }
     packetlen=12;
 
-#ifndef ASG9
+#ifndef HW_ASG9
     if(mode!=MODE_RX)
     {
 #endif        
@@ -531,7 +531,7 @@ void main(void)
                 cw_i++;
             }
         }
-#ifdef ASG9                            
+#ifdef HW_ASG9                            
                             IOCCNbits.IOCCN6=1;
                             IOCCNbits.IOCCN7=1;
                             IOCCPbits.IOCCP6=0;
@@ -609,7 +609,7 @@ void main(void)
                         else
                         {
                             
-#ifdef ASG9                            
+#ifdef HW_ASG9                            
                             IOCCNbits.IOCCN6=0;
                             IOCCNbits.IOCCN7=0;
                             IOCCPbits.IOCCP6=0;
@@ -620,7 +620,7 @@ void main(void)
                             to_sleep(SLEEP);
                             SDN_SetLow();
                             radio_tx_init(packetlen);
-#ifdef ASG9                            
+#ifdef HW_ASG9                            
                             IOCCNbits.IOCCN6=1;
                             IOCCNbits.IOCCN7=1;
                             IOCCPbits.IOCCP6=0;
@@ -659,7 +659,7 @@ void main(void)
                 }
             }
         }
-#ifndef ASG9
+#ifndef HW_ASG9
     }
     else
     {
