@@ -11,7 +11,7 @@ __eeprom _par _pars[]={
     {PAR_UI32,'R',{ 12500UL }}, // datarate
     {PAR_UI32,'W',{ 50000UL }}, // bandwidth
     {PAR_UI32,'D',{ 12500UL }}, // freq_deviation
-    {PAR_UI32,'S',{ 50000UL }}, // channel space
+    {PAR_UI32,'S',{ 50354UL }}, // channel space
     {PAR_I32,'P',{ 0L }}, // power
 #ifndef ASG9
     {PAR_UI8,'T',{ 1 }}, // transmit/rec
