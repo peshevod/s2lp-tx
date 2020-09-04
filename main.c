@@ -360,7 +360,7 @@ void main(void)
     }
 */
 #ifdef HW_ASG4
-    IOCASGAF2_SetInterruptHandler(EXTI_Callback_INT);
+    IOCAF2_SetInterruptHandler(EXTI_Callback_INT);
 #endif
 #ifdef HW_ASG5
     IOCCF7_SetInterruptHandler(EXTI_Callback_INT);

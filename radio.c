@@ -171,7 +171,7 @@ void radio_tx_init(uint8_t packetlen)
   
 }
 
-#ifndef ASG9
+#ifndef HW_ASG9
 
 void radio_rx_init(uint8_t packetlen)
 {
