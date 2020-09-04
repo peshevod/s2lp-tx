@@ -22,7 +22,7 @@ __eeprom _par _pars[]={
     {PAR_UI32,'N',{ 0x00000301 }}, // id
     {PAR_UI32,'I',{ 30 }}, // interval in seconds
     {PAR_UI8,'X',{ 3 }}, // repeater
-#ifdef HWVer3
+#ifdef HW_ASG4
     {PAR_UI8,'Y',{ 0x05 }}, // JP4 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP4 1 - norm, 0 - alarm (disconnected - 1, connected - 0)
     {PAR_UI8,'Z',{ 0x06 }}, // JP5 mode, 0-inactive, 1 - change status, 2 - if alarm - non-stop, if set 0x04 bit:  JP5 1 - norm, 0 - alarm (disconnected - 1, connected - 0)
 #endif
