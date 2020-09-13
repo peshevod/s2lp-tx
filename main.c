@@ -91,6 +91,8 @@ uint8_t packetlen;
 uint8_t jp4_mode,jp5_mode;
 uint32_t t_counter;
 int16_t init;
+uint8_t cw, pn9;
+uint32_t cw_i;
 
 
 void EXTI_Callback_INT(void)
@@ -508,7 +510,27 @@ void main(void)
     if(mode!=MODE_RX)
     {
 #endif        
+        cw=0;
+        pn9=0;
         radio_tx_init(packetlen);
+        if(cw || pn9)
+        {
+            // Disable the Peripheral Interrupts
+            INTERRUPT_PeripheralInterruptDisable();
+            cw_i=0;
+            EN39_SetHigh();
+            delay_ms(30);
+            S2LPCmdStrobeTx();
+            while(1)
+            {
+                delay_ms(1000);
+                if(cw) send_chars("MES: CW mode ");
+                else send_chars("MES: PN9 mode ");
+                send_chars(ui32toa(cw_i,pb));
+                send_chars("\r\n");
+                cw_i++;
+            }
+        }
 #ifdef HW_ASG9                            
                             IOCCNbits.IOCCN6=1;
                             IOCCNbits.IOCCN7=1;
