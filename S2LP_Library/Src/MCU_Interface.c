@@ -40,11 +40,11 @@ StatusBytes S2LPSpiWriteRegisters(uint8_t cRegAddress, uint8_t cNbBytes, uint8_t
     myWriteBuffer[1]=cRegAddress;
     CSN_SetLow();
 //        delay_us(2);
-    myReadBuffer[0] = SPI1_Exchange8bit(myWriteBuffer[0]);
-    myReadBuffer[1] = SPI1_Exchange8bit(myWriteBuffer[1]);
+    myReadBuffer[0] = SPI1_ExchangeByte(myWriteBuffer[0]);
+    myReadBuffer[1] = SPI1_ExchangeByte(myWriteBuffer[1]);
     for(uint8_t j=0;j<cNbBytes;j++)
     {
-        myReadBuffer[j+2] = SPI1_Exchange8bit(pcBuffer[j]);
+        myReadBuffer[j+2] = SPI1_ExchangeByte(pcBuffer[j]);
     }
 //      delay_us(2);
     CSN_SetHigh();
@@ -67,11 +67,11 @@ StatusBytes S2LPSpiReadRegisters(uint8_t cRegAddress, uint8_t cNbBytes, uint8_t*
     CSN_SetLow();
 //    send_chars("ReadRegs start\r\n");
     //        for(uint8_t j=0;j<cNbBytes;j++)delay_us(2);
-    myReadBuffer[0] = SPI1_Exchange8bit(myWriteBuffer[0]);
-    myReadBuffer[1] = SPI1_Exchange8bit(myWriteBuffer[1]);
+    myReadBuffer[0] = SPI1_ExchangeByte(myWriteBuffer[0]);
+    myReadBuffer[1] = SPI1_ExchangeByte(myWriteBuffer[1]);
     for(uint8_t j=0;j<cNbBytes;j++)
     {
-        pcBuffer[j] = SPI1_Exchange8bit(myWriteBuffer[j+2]);
+        pcBuffer[j] = SPI1_ExchangeByte(myWriteBuffer[j+2]);
     }
 //    send_chars("ReadRegs stop\r\n");
 //      delay_us(2);
@@ -92,8 +92,8 @@ StatusBytes S2LPSpiCommandStrobes(uint8_t cCommandCode)
     myWriteBuffer[1]=cCommandCode;
     CSN_SetLow();
 //        delay_us(2);
-    myReadBuffer[0] = SPI1_Exchange8bit(myWriteBuffer[0]);
-    myReadBuffer[1] = SPI1_Exchange8bit(myWriteBuffer[1]);
+    myReadBuffer[0] = SPI1_ExchangeByte(myWriteBuffer[0]);
+    myReadBuffer[1] = SPI1_ExchangeByte(myWriteBuffer[1]);
 //      delay_us(2);
     CSN_SetHigh();
 /*    p('c',myWriteBuffer[0],myReadBuffer[0]);
@@ -108,11 +108,11 @@ StatusBytes S2LPSpiWriteFifo(uint8_t cNbBytes, uint8_t* pcBuffer)
     myWriteBuffer[1]=0xFF;
     CSN_SetLow();
 //        delay_us(2);
-    myReadBuffer[0] = SPI1_Exchange8bit(myWriteBuffer[0]);
-    myReadBuffer[1] = SPI1_Exchange8bit(myWriteBuffer[1]);
+    myReadBuffer[0] = SPI1_ExchangeByte(myWriteBuffer[0]);
+    myReadBuffer[1] = SPI1_ExchangeByte(myWriteBuffer[1]);
     for(uint8_t j=0;j<cNbBytes;j++)
     {
-        myReadBuffer[2] = SPI1_Exchange8bit(pcBuffer[j]);
+        myReadBuffer[2] = SPI1_ExchangeByte(pcBuffer[j]);
     }
 //      delay_us(2);
     CSN_SetHigh();
@@ -127,11 +127,11 @@ StatusBytes S2LPSpiReadFifo(uint8_t cNbBytes, uint8_t* pcBuffer)
     myWriteBuffer[2]=0;
     CSN_SetLow();
 //        delay_us(2);
-    myReadBuffer[0] = SPI1_Exchange8bit(myWriteBuffer[0]);
-    myReadBuffer[1] = SPI1_Exchange8bit(myWriteBuffer[1]);
+    myReadBuffer[0] = SPI1_ExchangeByte(myWriteBuffer[0]);
+    myReadBuffer[1] = SPI1_ExchangeByte(myWriteBuffer[1]);
     for(uint8_t j=0;j<cNbBytes;j++)
     {
-        pcBuffer[j] = SPI1_Exchange8bit(myWriteBuffer[2]);
+        pcBuffer[j] = SPI1_ExchangeByte(myWriteBuffer[2]);
     }
 //      delay_us(2);
     CSN_SetHigh();
@@ -147,7 +147,7 @@ void write_reg(uint8_t ad,uint8_t value)
     delay_us(2);
     for(uint8_t i=0;i<3;i++)
     {
-        myReadBuffer[i] = SPI1_Exchange8bit(myWriteBuffer[i]);
+        myReadBuffer[i] = SPI1_ExchangeByte(myWriteBuffer[i]);
     }
     CSN_SetHigh();
     state0=myReadBuffer[0];
@@ -164,7 +164,7 @@ void write_reg(uint8_t ad,uint8_t value)
 //    delay_us(2);
     for(uint8_t i=0;i<3;i++)
     {
-        myReadBuffer[i] = SPI1_Exchange8bit(myWriteBuffer[i]);
+        myReadBuffer[i] = SPI1_ExchangeByte(myWriteBuffer[i]);
     }
     CSN_SetHigh();
     state0=myReadBuffer[0];
@@ -183,7 +183,7 @@ uint8_t read_reg(uint8_t ad)
 //    delay_us(2);
     for(uint8_t i=0;i<3;i++)
     {
-        myReadBuffer[i] = SPI1_Exchange8bit(myWriteBuffer[i]);
+        myReadBuffer[i] = SPI1_ExchangeByte(myWriteBuffer[i]);
     }
     CSN_SetHigh();
 //    delay_us(20);
@@ -199,7 +199,7 @@ void send_command(char cmd)
     delay_us(2);
     for(uint8_t i=0;i<2;i++)
     {
-        myReadBuffer[i] = SPI1_Exchange8bit(myWriteBuffer[i]);
+        myReadBuffer[i] = SPI1_ExchangeByte(myWriteBuffer[i]);
     }
     CSN_SetHigh();
     state0=myReadBuffer[0];

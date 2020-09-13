@@ -13,12 +13,12 @@
   Description:
     This header file provides implementations for pin APIs for all pins selected in the GUI.
     Generation Information :
-        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.76
+        Product Revision  :  PIC10 / PIC12 / PIC16 / PIC18 MCUs - 1.81.5
         Device            :  PIC16LF18446
         Driver Version    :  2.11
     The generated drivers are tested against the following:
-        Compiler          :  XC8 2.00
-        MPLAB             :  MPLAB X 5.10
+        Compiler          :  XC8 2.20 and above
+        MPLAB             :  MPLAB X 5.40
 
     Copyright (c) 2013 - 2015 released Microchip Technology Inc.  All rights reserved.
 */
@@ -70,7 +70,7 @@ void PIN_MANAGER_Initialize(void)
     TRISx registers
     */
     TRISA = 0x2F;
-    TRISB = 0x10;
+    TRISB = 0x30;
     TRISC = 0xDE;
 
     /**
@@ -100,6 +100,13 @@ void PIN_MANAGER_Initialize(void)
     SLRCONA = 0x37;
     SLRCONB = 0xF0;
     SLRCONC = 0xFF;
+
+    /**
+    INLVLx registers
+    */
+    INLVLA = 0x3F;
+    INLVLB = 0xF0;
+    INLVLC = 0xFF;
 
 
     /**
@@ -145,7 +152,6 @@ void PIN_MANAGER_Initialize(void)
     RC0PPS = 0x0F;   //RC0->EUSART1:TX1;    
     SSP1CLKPPS = 0x0E;   //RB6->MSSP1:SCK1;    
     RB6PPS = 0x13;   //RB6->MSSP1:SCK1;    
-    RB5PPS = 0x14;   //RB5->MSSP1:SDO1;    
     SSP1DATPPS = 0x0C;   //RB4->MSSP1:SDI1;    
     RX1DTPPS = 0x02;   //RA2->EUSART1:RX1;    
 }
